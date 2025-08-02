@@ -1067,32 +1067,33 @@
             deletePost: async (pId) => { const pS=await db.ref(`posts/${pId}`).once('value'); if(!pS.exists())return; const pD=pS.val(); if(pD.mediaUrl){try{await storage.refFromURL(pD.mediaUrl).delete();}catch(e){console.warn("Storage delete failed:",e.message);}} await dbModule.updateHashtagsForPost(pId, pD.text, true); const u={};u[`/posts/${pId}`]=null;u[`/postReactions/${pId}`]=null;u[`/postComments/${pId}`]=null;u[`/notifications`].orderByChild('postId').equalTo(pId).remove(); return db.ref().update(u);},
             
             getFeedPosts: async () => {
-                const s = await db.ref('posts').orderByChild('time').limitToLast(50).once('value');
-                if (!s.exists()) return [];
-                let posts = Object.entries(s.val()).map(([id, d]) => ({ id, ...d }));
-                posts.sort((a, b) => b.time - a.time); 
-
-                const friendsSnap = await db.ref(`friends/${currentUser.uid}`).once('value');
-                const friendsSet = new Set(Object.keys(friendsSnap.val() || {}));
+                // 1. Get IDs of users the current user follows
                 const followingSnap = await db.ref(`following/${currentUser.uid}`).once('value');
                 const followingSet = new Set(Object.keys(followingSnap.val() || {}));
+
+                // 2. Fetch recent posts and filter on the client
+                const s = await db.ref('posts').orderByChild('time').limitToLast(100).once('value'); // Fetch more to get enough from followed users
+                if (!s.exists()) return [];
                 
-                const visibilityCheckPromises = posts.map(async (post) => {
-                    if (!post || !post.user || blockedUserIds.has(post.user.uid)) {
-                        return null;
-                    }
+                let posts = Object.entries(s.val()).map(([id, d]) => ({ id, ...d }));
+                
+                // 3. Filter posts
+                const visiblePosts = posts.filter(post => {
+                    if (!post || !post.user) return false;
+                    
+                    // Exclude own posts, posts from blocked users, and posts from non-followed users
+                    if (post.user.uid === currentUser.uid) return false;
+                    if (blockedUserIds.has(post.user.uid)) return false;
+                    if (!followingSet.has(post.user.uid)) return false;
+                    
+                    // Keep the audience check for followed users' posts
                     const postAudience = post.audience || 'public';
-                    if (post.user.uid === currentUser.uid) { return post; }
-                    if (postAudience === 'public') { return post; }
-                    if (postAudience === 'only_me') { return null; }
-                    const postAuthorSnap = await db.ref(`users/${post.user.uid}`).once('value');
-                    if (!postAuthorSnap.exists()) { return null; }
-                    const postAuthorData = postAuthorSnap.val();
-                    if (postAuthorData.isProfessionalMode) { return followingSet.has(post.user.uid) ? post : null;
-                    } else { return friendsSet.has(post.user.uid) ? post : null; }
+                    if (postAudience === 'only_me') return false; // even if following, 'only_me' should be respected
+
+                    return true;
                 });
-                const visiblePosts = await Promise.all(visibilityCheckPromises);
-                return visiblePosts.filter(Boolean);
+
+                return visiblePosts.sort((a, b) => b.time - a.time);
             },
 
             getPostsByUser: async (uId) => {const s=await db.ref('posts').orderByChild('user/uid').equalTo(uId).once('value');return Object.entries(s.val()||{}).map(([id,d])=>({id,...d})).sort((a,b)=>b.time-a.time);},
@@ -1102,9 +1103,7 @@
                 await db.ref(`postReactions/${pId}/${currentUser.uid}`).set({type:rT}); 
                 db.ref(`users/${oId}/totalPostLikes`).transaction(currentLikes => (currentLikes || 0) + 1); 
                 
-                if (oId === currentUser.uid) {
-                    return; 
-                }
+                if (oId === currentUser.uid) return;
 
                 const postSnap = await db.ref(`posts/${pId}`).once('value');
                 const postData = postSnap.val();
@@ -1175,7 +1174,6 @@
                 return newCommentRef;
             },
             deleteComment: async (postId, commentId) => {
-                // First, recursively delete all replies to this comment
                 const repliesSnap = await db.ref(`postComments/${postId}`).orderByChild('parentId').equalTo(commentId).once('value');
                 if (repliesSnap.exists()) {
                     const replyDeletions = [];
@@ -1184,14 +1182,13 @@
                     });
                     await Promise.all(replyDeletions);
                 }
-                // Finally, delete the comment itself
                 return db.ref(`postComments/${postId}/${commentId}`).remove();
             },
             cacheAllUsers: async () => {
                 const snap = await db.ref('users').once('value');
                 allUsersCache = snap.exists() ? Object.values(snap.val()) : [];
             },
-            getAllUsers: () => { // Modified to use cache
+            getAllUsers: () => {
                 return allUsersCache;
             },
             cacheMentionableUsers: async () => {
@@ -1284,12 +1281,24 @@
                 return db.ref('stories').push(storyData);
             },
             getStories: async () => {
+                const followingSnap = await db.ref(`following/${currentUser.uid}`).once('value');
+                const followingSet = new Set(Object.keys(followingSnap.val() || {}));
+                
                 const twentyFourHoursAgo = Date.now() - (24 * 60 * 60 * 1000);
-                const storiesSnap = await db.ref('stories').orderByChild('timestamp').startAt(twentyFourHoursAgo).once('value'); if (!storiesSnap.exists()) return [];
+                const storiesSnap = await db.ref('stories').orderByChild('timestamp').startAt(twentyFourHoursAgo).once('value'); 
+                if (!storiesSnap.exists()) return [];
+                
                 const allStories = [];
-                storiesSnap.forEach(snap => { allStories.push({ id: snap.key, ...snap.val() }); });
-                const filteredStories = allStories.filter(story => !blockedUserIds.has(story.userId));
-                return filteredStories.sort((a,b) => b.timestamp - a.timestamp);
+                storiesSnap.forEach(snap => {
+                    allStories.push({ id: snap.key, ...snap.val() });
+                });
+                
+                const filteredStories = allStories.filter(story => {
+                    if (blockedUserIds.has(story.userId)) return false;
+                    return story.userId === currentUser.uid || followingSet.has(story.userId);
+                });
+                
+                return filteredStories.sort((a, b) => b.timestamp - a.timestamp);
             },
             reactToStory: (storyId, reactionType) => { return db.ref(`storyReactions/${storyId}/${currentUser.uid}`).set({ type: reactionType }); },
             markStoryAsViewed: (storyId) => { return db.ref(`stories/${storyId}/viewers/${currentUser.uid}`).set(true); },
@@ -1459,21 +1468,29 @@
                 adsterraModule.loadSocialAdScript();
                 uiModule.renderAvatar(document.getElementById('create-post-avatar'), currentUserData); 
                 uiModule.renderStoryReel();
-                const p = await dbModule.getFeedPosts();
-                const pf=document.getElementById('posts-feed');
-                if(p.length > 0){
-                    pf.innerHTML=p.map(uiModule.createPostElement).join('');
-                    p.forEach(post => {if(post.id)adsterraModule.renderPostBannerAd(`ad-container-${post.id}`);});
+                const posts = await dbModule.getFeedPosts();
+                
+                // Shuffle the posts for a varied feed
+                for (let i = posts.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [posts[i], posts[j]] = [posts[j], posts[i]];
+                }
+
+                const pf = document.getElementById('posts-feed');
+                if(posts.length > 0){
+                    pf.innerHTML=posts.map(uiModule.createPostElement).join('');
+                    posts.forEach(post => {if(post.id)adsterraModule.renderPostBannerAd(`ad-container-${post.id}`);});
                 } else {
                     pf.innerHTML=`<div class="card" style="padding:20px; text-align:center;">${_t('no_posts_found')}</div>`;
                 } 
             },
             renderVideos: async (c) => { 
                 c.innerHTML=`<h2 style="padding-left:10px;">${_t('videos')}</h2><div id="video-feed"></div>`;
-                const p = await dbModule.getVideoPosts();
-                const filteredPosts = p.filter(post => post && post.user && !blockedUserIds.has(post.user.uid) && (post.audience === 'public'));
+                const posts = await dbModule.getVideoPosts();
+                // Filter only for blocked users, as videos are public
+                const filteredPosts = posts.filter(post => post && post.user && !blockedUserIds.has(post.user.uid));
                 const vfc=c.querySelector('#video-feed');
-                if(filteredPosts.length>0){
+                if(filteredPosts.length > 0){
                     vfc.innerHTML=filteredPosts.map(uiModule.createPostElement).join('');
                     filteredPosts.forEach(post => {if(post.id)adsterraModule.renderPostBannerAd(`ad-container-${post.id}`);});
                 }else{
@@ -2457,7 +2474,6 @@
                                 uiModule.showLoader(true);
                                 try {
                                     await dbModule.deleteComment(postId, commentId);
-                                    // alert(_t('comment_deleted_success')); // Optional: can be annoying
                                     const commentEl = document.getElementById(`comment-${commentId}`);
                                     if (commentEl) commentEl.remove();
                                 } catch (err) {
@@ -2491,7 +2507,7 @@
                                 form.querySelector('#gameThumbInput').value = gameToEdit.thumbnailUrl;
                                 form.querySelector('#gameTypeSelect').value = gameToEdit.type;
                                 form.querySelector('#gameContentInput').value = gameToEdit.content;
-                                form.querySelector('#cancel-edit-game-btn').classList.remove('hidden');
+                                form.querySelector('#cancel-edit-btn').classList.remove('hidden');
                                 form.scrollIntoView({ behavior: 'smooth' });
                             }
                             break;
