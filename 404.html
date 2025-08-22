@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Media book - Loading...</title>
+    <script>
+      // ইউজার যে লিঙ্কে যেতে চেয়েছিল, সেটি sessionStorage-এ সেভ করা হচ্ছে
+      // এবং তাকে মূল index.html ফাইলে রিডাইরেক্ট করা হচ্ছে।
+      sessionStorage.redirect = location.pathname + location.search;
+      // নিচের '/media_book/' অংশটি আপনার রিপোজিটরির নামের সাথে মিলিয়ে পরিবর্তন করুন।
+      location.href = '/media_book/';
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
