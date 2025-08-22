@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lng="bn">
 <head>
@@ -743,7 +744,12 @@
         const firebaseConfig = { apiKey: "AIzaSyCOzGA68m9ub2d7Ks99NvwHJfRADkmUYVA", authDomain: "media-book-c19c8.firebaseapp.com", databaseURL: "https://media-book-c19c8-default-rtdb.firebaseio.com", projectId: "media-book-c19c8", storageBucket: "media-book-c19c8.appspot.com", messagingSenderId: "455770361782", appId: "1:455770361782:android:63fa899fddce561e5dfb17" };
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth(), db = firebase.database(), storage = firebase.storage();
-        const ADMIN_EMAIL = "mediabookofficial24@gmail.com", BASE_URL = "https://media.book.id";
+        
+        // +++ MODIFIED/ADDED +++ আপনার GitHub Pages এর সঠিক URL এখানে দিন
+        const BASE_URL = "https://mediabook.github.io/media_book";
+        const REPO_NAME = "media_book"; // +++ ADDED +++ আপনার রিপোজিটরির নাম
+
+        const ADMIN_EMAIL = "mediabookofficial24@gmail.com";
         const loader = document.getElementById('loader-modal');
         let currentUser = null, currentUserData = {}, currentView = 'feed', userDbListener = null, mentionableUsersCache = [], friendRequestDbListener = null, unreadNotificationsListener = null;
         
@@ -769,7 +775,6 @@
         const translations = {
             bn: {
                 delete_comment: "কমেন্ট মুছুন", confirm_comment_delete: "আপনি কি নিশ্চিত যে এই কমেন্টটি মুছতে চান?", comment_deleted_success: "কমেন্ট সফলভাবে মুছে ফেলা হয়েছে।", comment_delete_fail: "কমেন্ট মুছতে সমস্যা হয়েছে।", games: "গেমস", add_game: "নতুন গেম যোগ করুন", game_title: "গেমের নাম", thumbnail_url: "থাম্বনেইল ইউআরএল", game_type: "গেমের প্রকার", game_type_url: "ইউআরএল (URL)", game_type_html: "এইচটিএমএল (HTML)", game_content_url: "গেমের ইউআরএল দিন", game_content_html: "গেমের এইচটিএমএল কোড দিন", manage_games: "গেম ম্যানেজমেন্ট", no_games_found: "কোনো গেম পাওয়া যায়নি।", add_new_game: "নতুন গেম যোগ করুন", edit_game: "গেম এডিট করুন", delete_game: "গেম মুছুন", confirm_game_delete: "আপনি কি নিশ্চিত যে এই গেমটি মুছে ফেলতে চান?", game_added_success: "গেম সফলভাবে যোগ করা হয়েছে!", game_updated_success: "গেম সফলভাবে আপডেট করা হয়েছে!", game_deleted_success: "গেম সফলভাবে মুছে ফেলা হয়েছে!", game_op_failed: "গেম অপারেশনে সমস্যা হয়েছে।", add_friend: "ফ্রেন্ড হিসাবে যোগ করুন", friends: "ফ্রেন্ডস", cancel_request: "রিকোয়েস্ট বাতিল করুন", respond_to_request: "রিকোয়েস্টে সাড়া দিন", accept: "গ্রহণ করুন", decline: "বাতিল করুন", unfriend: "আনফ্রেন্ড", confirm_unfriend: "আপনি কি নিশ্চিত যে {name}-কে আনফ্রেন্ড করতে চান?", friend_requests: "ফ্রেন্ড রিকোয়েস্ট", no_friend_requests: "কোনো নতুন ফ্রেন্ড রিকোয়েস্ট নেই।", your_tools: "আপনার টুলস", insights_at_a_glance: "এক নজরে ইনসাইটস", balance_and_history: "ব্যালেন্স ও হিস্ট্রি", view_balance_details: "আপনার আয় এবং লেনদেনের ইতিহাস দেখুন", monetization_locked: "মনিটাইজেশন লক করা আছে", admin_approval_needed: "আনলক করার জন্য এডমিনের অনুমোদন প্রয়োজন", reply: "রিপ্লাই", liked_your_post: "<b>{name}</b> আপনার পোস্টে রিঅ্যাক্ট দিয়েছেন:", commented_on_your_post: "<b>{name}</b> আপনার পোস্টে কমেন্ট করেছেন:", replied_to_your_comment: "<b>{name}</b> আপনার কমেন্টে রিপ্লাই দিয়েছেন:", no_notifications: "আপনার কোনো নতুন নোটিফিকেশন নেই।", role_management: "ভূমিকা ব্যবস্থাপনা", role: "ভূমিকা (Role)", user_role: "ব্যবহারকারী", admin_role: "অ্যাডমিন", superadmin_role: "সুপার অ্যাডমিন", change_role_success: "{name}-এর ভূমিকা সফলভাবে পরিবর্তন করা হয়েছে।", change_role_fail: "ভূমিকা পরিবর্তন করতে সমস্যা হয়েছে।", cannot_change_own_role: "আপনি নিজের ভূমিকা পরিবর্তন করতে পারবেন না।", created_at: "তৈরির তারিখ", user_id: "ইউজার আইডি", send_password_reset: "পাসওয়ার্ড রিসেট পাঠান", password_reset_sent_success: "{email}-এ পাসওয়ার্ড রিসেট লিঙ্ক পাঠানো হয়েছে।", password_reset_sent_fail: "পাসওয়ার্ড রিসেট লিঙ্ক পাঠাতে সমস্যা হয়েছে।", admin_search_placeholder: "নাম বা ইমেইল দিয়ে খুঁজুন...", send_gift: "গিফট পাঠান", gift_amount: "গিফটের পরিমাণ", gift_note: "নোট (ঐচ্ছিক)", confirm_gift: "আপনি কি নিশ্চিত যে আপনি {name}-কে ৳{amount} গিফট করতে চান?", insufficient_balance: "আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই।", gift_success: "সফলভাবে {name}-কে ৳{amount} গিফট পাঠানো হয়েছে!", gift_fail: "গিফট পাঠাতে সমস্যা হয়েছে।", reason_gift_sent: "{name}-কে গিফট পাঠানো হয়েছে", reason_gift_received: "{name}-এর থেকে গিফট পাওয়া গেছে", gift_received_notification: "<b>{name}</b> আপনাকে ৳{amount} গিফট পাঠিয়েছেন!", next_steps: "পরবর্তী পদক্ষেপ", weekly_challenge: "সাপ্তাহিক চ্যালেঞ্জ", weekly_challenge_remaining: "{percent}% বাকি", continue_weekly_challenge: "আপনার সাপ্তাহিক চ্যালেঞ্জ চালিয়ে যান!", requirements_left: "এই সপ্তাহের চ্যালেঞ্জটি সম্পূর্ণ করতে আপনার {count}টি প্রয়োজনীয়তা বাকি আছে।", earn_reels_achievement: "একটি রিল অর্জন করুন", learn_reels_tools: "রিল তৈরির টুলস অন্বেষণ করতে সাহায্য করে এমন অর্জনগুলি কীভাবে অর্জন করবেন তা জানুন।", insights: "ইনসাইটস", last_28_days: "শেষ ২৮ দিন", great_job_views: "দারুণ কাজ, আপনার <strong>{count}</strong> ভিউ হয়েছে!", from_previous_28_days: "পূর্ববর্তী ২৮ দিনের থেকে", approximate_earnings: "আনুমানিক আয়", engagement: "এনগেজমেন্ট", net_followers: "নেট ফলোয়ার্স", like: "লাইক", dislike: "ডিজলাইক", love: "লাভ", wow: "ওয়াও", sad: "স্যাড", angry: "অ্যাংরি", haha: "হাহা", create_story: "স্টোরি তৈরি", your_story: "আপনার স্টোরি", upload_story: "স্টোরি আপলোড করুন", upload_story_prompt: "একটি ভিডিও ফাইল (সর্বোচ্চ ২ মিনিট) বাছাই করুন:", error_story_duration: "দুঃখিত, ভিডিওটি অবশ্যই ২ মিনিটের কম হতে হবে।", story_upload_success: "স্টোরি সফলভাবে আপলোড হয়েছে!", story_upload_fail: "স্টোরি আপলোড করতে সমস্যা হয়েছে: {message}", no_stories_found: "বন্ধুদের কোনো নতুন স্টোরি নেই।", react_to_story: "স্টোরিতে রিঅ্যাক্ট দিন", viewers: "ভিউয়ার ({count})", reactions_title: "রিঅ্যাকশনস", story_viewers_title: "স্টোরি ভিউয়ারস", all: "সব", no_reactions_yet: "এখনো কোনো রিঅ্যাকশন নেই।", no_views_yet: "এখনো কেউ দেখেনি।", auth_subtitle: "বন্ধুদের সাথে সংযোগ স্থাপন করুন এবং বিশ্বের সাথে শেয়ার করুন।", email_or_phone_placeholder: "ইমেইল অথবা ফোন নম্বর", password_placeholder: "পাসওয়ার্ড", login_button: "লগইন করুন", forgot_password: "পাসওয়ার্ড ভুলে গেছেন?", create_new_account_button: "নতুন অ্যাকাউন্ট তৈরি করুন", home: "হোম", videos: "ভিডিও", notifications: "নোটিফিকেশন", messages: "মেসেজ", profile: "প্রোফাইল", admin_panel: "অ্যাডমিন প্যানেল", balance: "ব্যালেন্স", logout: "লগআউট", settings: "সেটিংস", language: "ভাষা", theme: "থিম", light_theme: "লাইট", dark_theme: "ডার্ক", contacts: "কন্টাক্টস", search_users_placeholder: "ব্যবহারকারী খুঁজুন...", no_results_found: "কোনো ফলাফল পাওয়া যায়নি", whats_on_your_mind: "কী ভাবছেন, {name}?", no_posts_found: "এই সেকশনে কোনো পোস্ট পাওয়া যায়নি।", no_videos_found: "কোনো ভিডিও পোস্ট পাওয়া যায়নি।", user_not_found: "ব্যবহারকারীকে খুঁজে পাওয়া যায়নি।", account_suspended: "এই অ্যাকাউন্টটি সাসপেন্ড করা হয়েছে।", edit_profile: "প্রোফাইল এডিট", follow: "ফলো", following: "ফলোয়িং", message: "মেসেজ", posts: "পোস্ট", followers: "ফলোয়ার", following_count: "ফলোয়িং", intro: "পরিচিতি", name: "নাম", email: "ইমেইল", phone: "ফোন", application_or_request: "এপ্লিকেশন বা আবেদন", copy: "কপি", copied: "কপি হয়েছে!", no_posts_by_user: "এই ব্যবহারকারী এখনো কোনো পোস্ট করেননি।", comment: "কমেন্ট", comments: "{count} কমেন্ট", write_a_comment: "একটি কমেন্ট লিখুন...", user_suspended_alert: "আপনার অ্যাকাউন্টটি সাসপেন্ড করা হয়েছে।", new_user_bio: "আমি একজন নতুন ব্যবহারকারী!", relationship_single: "সিঙ্গেল", with_person: "এর সাথে {status}", balance_history: "হিস্ট্রি", balance_with_currency: "ব্যালেন্স: ৳", profile_link: "প্রোফাইল লিঙ্ক", admin_panel_users: "অ্যাডমিন প্যানেল - ব্যবহারকারী", unverify: "আনভেরিফাই", verify: "ভেরিফাই", remove_monetization: "মনিটাইজেশন সরান", monetize: "মনিটাইজ করুন", manage_balance: "ব্যালেন্স", unsuspend: "আনসাসপেন্ড", suspend: "সাসপেন্ড", global_notification: "গ্লোবাল নোটিফিকেশন", send_notification_placeholder: "সকল ব্যবহারকারীকে একটি নোটিফিকেশন পাঠান...", send_notification: "নোটিফিকেশন পাঠান", monetization_settings: "মনিটাইজেশন সেটিংস", reactions_per_balance: "রিঅ্যাকশন প্রতি ব্যালেন্স (কত?)", balance_amount: "ব্যালেন্সের পরিমাণ (কত?)", save_settings: "সেটিংস সংরক্ষণ", new_post: "নতুন পোস্ট", whats_in_your_mind: "আপনার মনের কথা লিখুন...", upload_media: "ছবি/ভিডিও আপলোড করুন:", post_button: "পোস্ট", cancel: "বাতিল", signup: "সাইন আপ", signup_subtitle: "এটি দ্রুত এবং সহজ।", full_name: "আপনার পুরো নাম", new_password: "নতুন পাসওয়ার্ড", edit_profile_title: "প্রোফাইল এডিট করুন", bio: "বায়ো", write_about_yourself: "আপনার সম্পর্কে কিছু লিখুন...", relationship_status: "রিলেশনশিপ স্ট্যাটাস", partner_username: "পার্টনারের ইউজারনেম (e.g., @username)", profile_picture: "প্রোফাইল ছবি", cover_photo: "কভার ছবি", save: "সংরক্ষণ", 
-                // *** সংশোধিত লাইন ***
                 manage_balance_for: "'{name}' এর ব্যালেন্স ম্যানেজ করুন", 
                 current_balance: "বর্তমান ব্যালেন্স", set_new_balance: "নতুন ব্যালেন্স সেট করুন", balance_history_title: "ব্যালেন্স হিস্ট্রি", date: "তারিখ", reason: "কারণ", amount: "টাকার পরিমাণ", new_balance: "নতুন ব্যালেন্স", reason_reaction: "রিঅ্যাকশন মাইলস্টোন বোনাস", reason_admin: "এডমিন কর্তৃক আপডেট", reason_unknown: "অজানা কারণ", no_transaction_history: "কোনো লেনদেনের ইতিহাস পাওয়া যায়নি।", close: "বন্ধ করুন", error_generic: "দুঃখিত, একটি সমস্যা হয়েছে।", error_post_delete: "পোস্ট ডিলিট করতে সমস্যা হয়েছে: {message}", confirm_post_delete: "আপনি কি নিশ্চিত যে এই পোস্টটি ডিলিট করতে চান?", error_login: "ভুল ইমেইল অথবা পাসওয়ার্ড।", fill_all_fields: "অনুগ্রহ করে সকল তথ্য পূরণ করুন।", registration_failed: "রেজিস্ট্রেশন ব্যর্থ: {message}", post_creation_failed: "পোস্ট করতে সমস্যা হয়েছে: {message}", profile_update_failed: "প্রোফাইল আপডেট করতে সমস্যা হয়েছে: {message}", invalid_number: "অনুগ্রহ করে একটি সঠিক সংখ্যা দিন।", balance_update_failed: "ব্যালেন্স আপডেট করতে সমস্যা হয়েছে: {message}", balance_update_success: "ব্যালেন্স সফলভাবে আপডেট করা হয়েছে!", settings_save_success: "সেটিংস সফলভাবে সংরক্ষিত হয়েছে!", settings_save_failed: "সেটিংস সংরক্ষণ করতে সমস্যা হয়েছে: {message}", notification_sent_success: "নোটিফিকেশন সফলভাবে পাঠানো হয়েছে!", notification_removed: "নোটিফিকেশন সরানো হয়েছে।", notification_send_failed: "নোটিফিকেশন পাঠাতে সমস্যা হয়েছে: {message}", action_failed: "একটি সমস্যা হয়েছে।", password_reset_prompt: "পাসওয়ার্ড রিসেট করার জন্য আপনার ইমেইল এড্রেসটি দিন:", password_reset_success: "আপনার ইমেইলে পাসওয়ার্ড রিসেট করার জন্য একটি লিঙ্ক পাঠানো হয়েছে।", password_reset_fail: "পাসওয়ার্ড রিসেট লিঙ্ক পাঠাতে সমস্যা হয়েছে: {message}", delete_post_action: "পোস্ট ডিলিট করুন", copy_post_link_action: "লিঙ্ক কপি করুন", account_security: "অ্যাকাউন্ট ও নিরাপত্তা", current_password_placeholder: "বর্তমান পাসওয়ার্ড (পরিবর্তনের জন্য আবশ্যক)", confirm_password_placeholder: "নতুন পাসওয়ার্ড নিশ্চিত করুন", profile_update_success: "প্রোফাইল সফলভাবে আপডেট করা হয়েছে!", password_mismatch_error: "নতুন পাসওয়ার্ড দুটি মেলেনি।", reauth_required_error: "ইমেল বা পাসওয়ার্ড পরিবর্তন করতে, অনুগ্রহ করে আপনার বর্তমান পাসওয়ার্ড লিখুন।", reauth_failed_error: "বর্তমান পাসওয়ার্ডটি ভুল। অনুগ্রহ করে আবার চেষ্টা করুন।", people: "মানুষজন", find_people_title: "সবাইকে খুঁজুন", no_users_found: "কোনো ব্যবহারকারী পাওয়া যায়নি।", total_likes: "মোট লাইক", total_views: "মোট ভিউ", views_count: "{count} ভিউ", audience_select: "কারা দেখবে?", public: "পাবলিক", only_me: "শুধু আমি", hashtag_feed_title: "হ্যাশট্যাগ #{tag}", no_posts_with_hashtag: "এই হ্যাশট্যাগ দিয়ে কোনো পোস্ট পাওয়া যায়নি।", block_user: "ব্যবহারকারীকে ব্লক করুন", unblock_user: "ব্যবহারকারীকে আনব্লক করুন", user_blocked_message: "আপনি এই ব্যবহারকারীকে ব্লক করেছেন।", user_not_available_message: "এই ব্যবহারকারী উপলব্ধ নয়।", confirm_block: "আপনি কি নিশ্চিত যে {name}-কে ব্লক করতে চান?", confirm_unblock: "আপনি কি নিশ্চিত যে {name}-কে আনব্লক করতে চান?", mfa_title: "দুই-ধাপ যাচাইকরণ (2FA)", mfa_enroll_title: "2FA চালু করুন", mfa_enter_phone_code_prompt: "আপনার ফোনে পাঠানো ৬-সংখ্যার কোডটি দিন:", mfa_verification_code_placeholder: "যাচাইকরণ কোড", mfa_verify_button: "যাচাই করুন", mfa_phone_enroll_fail: "ফোন 2FA চালু করতে সমস্যা হয়েছে: {message}", mfa_phone_enroll_success: "ফোন 2FA সফলভাবে চালু হয়েছে।", mfa_login_prompt: "আপনার অ্যাকাউন্ট সুরক্ষিত। অনুগ্রহ করে যাচাইকরণ কোড দিন।", mfa_disable_prompt: "আপনি কি 2FA বন্ধ করতে চান?", mfa_phone_disable_success: "ফোন 2FA সফলভাবে বন্ধ করা হয়েছে।", mfa_phone_disable_fail: "ফোন 2FA বন্ধ করতে ব্যর্থ হয়েছে।", manage_2fa: "2FA ম্যানেজ করুন", manage_blocked_list: "ম্যানেজ ব্লক লিস্ট", blocked_users_title: "ব্লক করা ব্যবহারকারীদের তালিকা", unblock: "আনব্লক", no_blocked_users: "আপনি কাউকে ব্লক করেননি।", mfa_add_phone_prompt: "ফোন 2FA চালু করার জন্য, অনুগ্রহ করে প্রথমে আপনার প্রোফাইল এডিট করে একটি ফোন নম্বর যোগ করুন।", mfa_invalid_phone: "অনুগ্রহ করে একটি সঠিক ফোন নম্বর (+880...) প্রদান করুন।", enable_phone_2fa: "ফোন (SMS) 2FA চালু করুন", disable_phone_2fa: "ফোন (SMS) 2FA বন্ধ করুন", enable_totp_2fa: "Authenticator অ্যাপ 2FA চালু করুন", disable_totp_2fa: "Authenticator অ্যাপ 2FA বন্ধ করুন", mfa_scan_qr_prompt: "আপনার Authenticator অ্যাপ দিয়ে এই QR কোডটি স্ক্যান করুন অথবা নিচের সিক্রেট কী ব্যবহার করে ম্যানুয়ালি অ্যাকাউন্ট যোগ করুন। তারপর ভেরিফিকেশন কোডটি দিন।", mfa_enter_totp_code_prompt: "আপনার authenticator অ্যাপ থেকে পাওয়া ৬-সংখ্যার কোডটি দিন:", mfa_totp_enroll_success: "Authenticator অ্যাপ 2FA সফলভাবে চালু হয়েছে!", mfa_totp_enroll_fail: "Authenticator অ্যাপ 2FA চালু করতে সমস্যা হয়েছে: {message}", mfa_totp_disable_success: "Authenticator অ্যাপ 2FA সফলভাবে বন্ধ করা হয়েছে।", mfa_totp_disable_fail: "Authenticator অ্যাপ 2FA বন্ধ করতে ব্যর্থ হয়েছে।", select_2fa_method: "একটি 2FA পদ্ধতি বেছে নিন", phone_sms: "ফোন (এসএমএস)", authenticator_app: "Authenticator অ্যাপ", secret_key: "সিক্রেট কী", click_to_copy: "কপি করতে ক্লিক করুন", professional_mode: "প্রফেশনাল মোড", turn_on_professional_mode: "প্রফেশনাল মোড চালু করুন", turn_off_professional_mode: "প্রফেশনাল মোড বন্ধ করুন", professional_mode_on_success: "প্রফেশনাল মোড চালু হয়েছে!", professional_mode_off_success: "প্রফেশনাল মোড বন্ধ হয়েছে!", digital_creator: "ডিজিটাল ক্রিয়েটর", profile_category: "প্রোফাইল ক্যাটাগরি", professional_dashboard: "প্রফেশনাল ড্যাশবোর্ড", performance_overview: "পারফরম্যান্স ওভারভিউ", post_engagement: "পোস্ট এনগেজমেন্ট", view_dashboard: "ড্যাশবোর্ড দেখুন", managed_by_pro_mode: "ব্যবহারকারীর প্রফেশনাল মোড দ্বারা নিয়ন্ত্রিত",
             },
@@ -900,6 +905,7 @@
                     }
                 });
             },
+            // +++ MODIFIED/ADDED +++ সম্পূর্ণ handleUserLogin ফাংশনটি রাউটিং লজিক সহ আপডেট করা হয়েছে
             handleUserLogin: async (user) => {
                 currentUser = user;
                 const initialSnap = await db.ref('users/' + user.uid).once('value');
@@ -914,19 +920,28 @@
                 };
                 
                 uiModule.showApp(); 
-                dbModule.cacheAllUsers(); // Cache all users on login
-                dbModule.cacheMentionableUsers();
+                await dbModule.cacheAllUsers();
+                await dbModule.cacheMentionableUsers();
                 uiModule.initSearchBars();
                 
-                const path = window.location.pathname;
+                // --- নতুন এবং উন্নত রাউটিং লজিক ---
+                let path = sessionStorage.redirect;
+                if (path) {
+                    delete sessionStorage.redirect;
+                    // রিপোজিটরির পাথ অংশটি কেটে দিন (যেমন /media_book/)
+                    path = path.replace(new RegExp(`^/${REPO_NAME}`), '');
+                } else {
+                    path = window.location.pathname.replace(new RegExp(`^/${REPO_NAME}`), '');
+                }
+
                 const pathParts = path.split('/').filter(Boolean);
 
-                let targetView = currentUserData.isAdmin ? 'admin' : 'feed';
+                let targetView = 'feed';
                 let params = {};
 
-                if (pathParts.length > 0 && path !== '/') {
-                     if (pathParts[0] === 'post' && pathParts[1]) {
-                        targetView = 'feed';
+                if (pathParts.length > 0 && pathParts[0] !== 'index.html') {
+                    if (pathParts[0] === 'post' && pathParts[1]) {
+                        targetView = 'feed'; // পোস্টের জন্য প্রথমে ফিড দেখান
                     } else {
                         const slug = decodeURIComponent(pathParts[0]);
                         const slugSnap = await db.ref('usernameSlugs').child(slug).once('value');
@@ -937,11 +952,12 @@
                     }
                 }
                 
-                await uiModule.showView(targetView, params, false); 
-                
-                 if (targetView === 'feed' && pathParts[0] === 'post' && pathParts[1]) {
+                await uiModule.showView(targetView, params, false); // pushState: false দিন যাতে ইতিহাস পরিবর্তন না হয়
+
+                // যদি URL এ পোস্ট থাকে, তবে ফিড দেখানোর পর পোস্টের মোডালটি দেখান
+                if (pathParts[0] === 'post' && pathParts[1]) {
                     uiModule.showPostDetailModal(pathParts[1]);
-                 }
+                }
                 
                 if(userDbListener) userDbListener.off();
                 userDbListener = db.ref('users/' + user.uid).on('value', liveSnap => { 
@@ -975,8 +991,6 @@
                          sidebarBadge.classList.add('hidden');
                     }
                 });
-
-
             },
             register: async (name, email, phone, pass) => { 
                 const cred = await auth.createUserWithEmailAndPassword(email, pass); 
@@ -1370,6 +1384,7 @@
             showApp: async () => { document.getElementById('app-wrapper').classList.remove('hidden'); document.getElementById('auth-page-container').classList.add('hidden'); uiModule.updateUserDataInUI(currentUserData); await uiModule.renderContacts(); uiModule.initGlobalNotificationListener(); if(window.innerWidth <= 768) { document.getElementById('mobile-search-container').style.display='none'; document.getElementById('desktop-header-icons').style.display='none'; } adsterraModule.renderSidebarAd('sidebar-ad-container'); },
             showAuth: () => { document.getElementById('app-wrapper').classList.add('hidden'); document.getElementById('auth-page-container').classList.remove('hidden'); document.getElementById('authError').textContent = ''; currentView = 'feed'; },
             updateUserDataInUI: (d) => { if (!d) return; const role = d.role || 'user'; let roleIcon = ''; if (role === 'superadmin') roleIcon = '👑'; else if (role === 'admin') roleIcon = '🛡️'; uiModule.renderAvatar(document.getElementById('sidebar-avatar'),d); document.getElementById('sidebar-name').innerHTML = `${d.name}${uiModule.getVerifiedBadgeHTML(d.isVerified)} <span class="admin-badge">${roleIcon}</span>`; document.getElementById('admin-panel-btn').classList.toggle('hidden', !d.isAdmin); document.getElementById('dropdown-admin-btn').classList.toggle('hidden', !d.isAdmin); document.getElementById('balance-menu-item').classList.toggle('hidden', !d.isMonetized); if(d.isMonetized) document.getElementById('user-balance').textContent = (d.balance||0).toFixed(2); document.getElementById('dashboard-btn').classList.toggle('hidden', !d.isProfessionalMode); document.getElementById('dropdown-dashboard-btn').classList.toggle('hidden', !d.isProfessionalMode);},
+            // +++ MODIFIED/ADDED +++ সম্পূর্ণ showView ফাংশনটি নতুন URL হ্যান্ডলিং সহ আপডেট করা হয়েছে
             showView: async (vN, p = {}, pushState = true) => {
                 currentView = vN;
 
@@ -1383,23 +1398,25 @@
                 
                 const mC = document.getElementById('main-content'); mC.innerHTML = ''; uiModule.showLoader(true);
                 
-                let targetView = vN, params = p;
                 if (pushState) {
-                    let url = `/${vN}`;
+                    let urlPath = `/${vN}`;
                     if (vN === 'profile' && p.userId) {
                         const userSnap = await db.ref(`users/${p.userId}`).once('value');
                         const userSlug = userSnap.val()?.usernameSlug;
-                        url = userSlug ? `/${userSlug}` : `/${vN}/${p.userId}`;
+                        urlPath = userSlug ? `/${userSlug}` : `/profile/${p.userId}`;
                     } else if (vN === 'hashtag' && p.tag) {
-                        url = `/${vN}/${p.tag}`;
+                        urlPath = `/hashtag/${p.tag}`;
+                    } else if (vN === 'post' && p.postId) {
+                        urlPath = `/post/${p.postId}`;
                     } else if (vN === 'game-player' && p.gameId) {
-                        url = `/games/${p.gameId}`;
+                        urlPath = `/games/${p.gameId}`;
                     }
-                    history.pushState({ view: vN, params: p }, '', url);
+                    const finalUrl = `/${REPO_NAME}${urlPath.startsWith('/') ? '' : '/'}${urlPath}`;
+                    history.pushState({ view: vN, params: p }, '', finalUrl);
                 }
 
+
                 try {
-                    // মেসেঞ্জার সম্পর্কিত ভিউ মুছে ফেলা হয়েছে
                     const viewMap = { 
                         feed: uiModule.renderFeed, 
                         videos: uiModule.renderVideos, 
@@ -1484,6 +1501,7 @@
                     vfc.innerHTML=`<div class="card" style="padding:20px; text-align:center;">${_t('no_videos_found')}</div>`;
                 }
             },
+            // +++ MODIFIED/ADDED +++ প্রোফাইল লিঙ্ক তৈরির জন্য এই ফাংশনটি আপডেট করা হয়েছে
             renderProfile: async (c, uId) => {
                 if (blockedUserIds.has(uId)) {
                     const iBlockedThem = (await db.ref(`userBlocks/${currentUser.uid}/${uId}`).once('value')).exists();
@@ -1530,12 +1548,13 @@
                         else if (receivedRequest) { aBH = `<button class="btn" data-view="notifications"><i class="fa-solid fa-user-group"></i> ${_t('respond_to_request')}</button>`; }
                         else { aBH = `<button class="btn" data-action="send-friend-request" data-userid="${uId}"><i class="fa-solid fa-user-plus"></i> ${_t('add_friend')}</button>`; }
                     }
-                    // পরিবর্তিত মেসেজ বাটন (data-view="chat" এর পরিবর্তে)
                     aBH += `<button class="btn secondary" data-action="launch-messenger"><i class="fa-solid fa-comment-dots"></i></button>${giftButton}${moreMenu}`;
                 }
                 let rH = ''; const cVR = iMP || (uD.relationshipWith === currentUserData.name); if(cVR && uD.relationshipStatus && uD.relationshipStatus !== _t('relationship_single')){ rH = `<div class="intro-item"><i class="fa-solid fa-heart"></i><span><strong>${uD.relationshipStatus}</strong>${uD.relationshipWith ? ` ${_t('with_person', { status: uiModule.linkifyText(`@${uD.relationshipWith}`) })}` : ''}</span></div>`; }
                 const bHB = iMP && uD.isMonetized ? `<button class="btn small" data-action="view-balance-history" style="margin-left:auto;">${_t('balance_history')}</button>` : '';
-                const profileLink = `${BASE_URL}/${uD.usernameSlug || encodeURIComponent(uD.name)}`;
+                
+                const profileLink = `${BASE_URL}/${uD.usernameSlug || 'profile/' + uId}`; // সঠিক প্রোফাইল লিঙ্ক তৈরি
+                
                 const pIH = iMP ? `<div class="intro-item"><i class="fa-solid fa-envelope"></i><span>${_t('email')}: ${uD.email}</span></div><div class="intro-item"><i class="fa-solid fa-phone"></i><span>${_t('phone')}: ${uD.phone || 'N/A'}</span></div>${rH}${uD.isMonetized ? `<div class="intro-item"><i class="fa-solid fa-dollar-sign"></i><span>${_t('balance_with_currency')}<strong>${(uD.balance||0).toFixed(2)}</strong></span>${bHB}</div>`:''}<div class="intro-item"><i class="fa-solid fa-file-signature"></i><a href="https://mediabookpaymentmethodadd.blogspot.com" target="_blank" rel="noopener noreferrer">${_t('application_or_request')}</a></div><hr><div class="intro-item"><i class="fa-solid fa-link"></i><span id="profile-link-text">${profileLink}</span><button class="btn small" data-action="copy-profile-link" data-link="${profileLink}" style="margin-left:auto;">${_t('copy')}</button></div>` : rH;
                 const followerSnap = await db.ref(`follows/${uId}`).once('value');
                 const followingSnap = await db.ref(`following/${uId}`).once('value');
@@ -1604,11 +1623,13 @@
                 linkedText = linkedText.replace(/#([a-zA-Z0-9_]+)/g, `<a href="#" class="hashtag-link" data-view="hashtag" data-tag="$1">#$1</a>`);
                 return linkedText;
             },
+            // +++ MODIFIED/ADDED +++ পোস্ট লিঙ্ক তৈরির জন্য এই ফাংশনটি আপডেট করা হয়েছে
             createPostElement: (p) => {
                 if (!p?.user?.name) return '';
                 const isAdminOrOwner = currentUserData.isAdmin || p.user.uid === currentUser.uid;
+                const postLinkForCopy = `${BASE_URL}/post/${p.id}`; // সঠিক পোস্ট লিঙ্ক তৈরি
                 const deleteMenu = isAdminOrOwner ? `<li data-action="delete-post" data-postid="${p.id}"><i class="fa-solid fa-trash"></i> ${_t('delete_post_action')}</li>` : '';
-                const dropdownMenu = `<div class="post-actions-menu"><i class="fa-solid fa-ellipsis"></i><ul class="dropdown-menu"><li data-action="copy-post-link" data-postid="${p.id}"><i class="fa-solid fa-link"></i> ${_t('copy_post_link_action')}</li>${deleteMenu}</ul></div>`;
+                const dropdownMenu = `<div class="post-actions-menu"><i class="fa-solid fa-ellipsis"></i><ul class="dropdown-menu"><li data-action="copy-post-link" data-link="${postLinkForCopy}"><i class="fa-solid fa-link"></i> ${_t('copy_post_link_action')}</li>${deleteMenu}</ul></div>`;
                 const mH=p.mediaUrl?(p.mediaType==='video'?`<video src="${p.mediaUrl}" class="post-media" controls playsinline></video>`:`<img src="${p.mediaUrl}" class="post-media">`):'';
                 const locale = currentLang === 'bn' ? 'bn-BD' : 'en-US';
                 const postUserRole = p.user.role || 'user'; let roleIcon = ''; if (postUserRole === 'superadmin') roleIcon = '👑'; else if (postUserRole === 'admin') roleIcon = '🛡️';
@@ -1724,7 +1745,7 @@
                             <div class="avatar" id="admin-avatar-${user.uid}" data-view="profile" data-userid="${user.uid}"></div>
                             <div class="admin-user-info"> <strong>${user.name}${uiModule.getVerifiedBadgeHTML(user.isVerified)} <span class="role-badge ${role}">${roleText}</span></strong> <small>${user.email}</small> </div>
                         </div>
-                        <div class="admin-user-details"> <b>${_t('user_id')}:</b> <span>${user.uid}</span> <b>${_t('created_at')}:</b> <span>${new Date(user.createdAt).toLocaleDateString()}</span> <b>${_t('profile_link')}:</b> <a href="/${user.usernameSlug}" target="_blank" data-view="profile" data-userid="${user.uid}">/${user.usernameSlug}</a> </div>
+                        <div class="admin-user-details"> <b>${_t('user_id')}:</b> <span>${user.uid}</span> <b>${_t('created_at')}:</b> <span>${new Date(user.createdAt).toLocaleDateString()}</span> <b>${_t('profile_link')}:</b> <a href="/${REPO_NAME}/${user.usernameSlug}" target="_blank" data-view="profile" data-userid="${user.uid}">/${user.usernameSlug}</a> </div>
                         <div class="admin-user-actions">
                             ${isSuperAdmin ? roleSelector : ''}
                             <button class="btn small" data-action="manage-balance" data-userid="${user.uid}" data-username="${user.name}" data-currentbalance="${user.balance||0}">${_t('manage_balance')}</button>
@@ -2260,15 +2281,11 @@
         document.addEventListener('DOMContentLoaded', () => {
             authModule.init();
             
+            // +++ MODIFIED/ADDED +++ onpopstate এখন নতুন রাউটিং লজিক ব্যবহার করবে
             window.onpopstate = (event) => {
                 if (event.state) {
                     const { view, params } = event.state;
-                    // ইনবক্স বা চ্যাট ভিউ এর জন্য বিশেষ হ্যান্ডলিং
-                    if (view === 'inbox' || view === 'chat') {
-                        uiModule.showView('feed', {}, false); // ফলব্যাক হিসেবে ফিড দেখানো হচ্ছে
-                    } else {
-                        uiModule.showView(view, params, false);
-                    }
+                    uiModule.showView(view, params, false); // false কারণ আমরা শুধু history তে পেছনে যাচ্ছি, নতুন এন্ট্রি তৈরি করছি না
                 } else {
                     const defaultView = currentUserData?.isAdmin ? 'admin' : 'feed';
                     uiModule.showView(defaultView, {}, false);
@@ -2391,10 +2408,9 @@
                 const vT=e.target.closest('[data-view]');
                 if (vT) {
                     const view = vT.dataset.view;
-                    // মেসেঞ্জার ভিউ এর জন্য নতুন লজিক
                     if (view === 'inbox' || view === 'chat') {
                         launchMessengerApp();
-                        return; // এখানেই শেষ, showView কল হবে না
+                        return;
                     }
                     
                     const params = { userId: vT.dataset.userid, tag: vT.dataset.tag, gameId: vT.dataset.gameid };
@@ -2413,7 +2429,6 @@
                 if(t.matches('.reaction') && !t.closest('.story-reaction-bar')){const p=t.closest('.post'),rT=t.dataset.reactionType;await dbModule.reactToPost(p.dataset.postId,p.dataset.ownerid,rT);return;}
                 
                 const a=t.dataset.action;if(a){
-                // launch-messenger action এর জন্য loader বন্ধ রাখা হয়েছে
                 const nLA=['logout','close-notification','copy-profile-link','edit-profile','manage-balance','view-balance-history','focus-comment','react-post','set-lang','set-theme','copy-post-link', 'create-story', 'view-story', 'show-reactions', 'show-story-viewers', 'show-reply-form', 'navigate-to-post', 'send-gift', 'launch-messenger'];
                 if(!nLA.includes(a))uiModule.showLoader(true);
                 try{
@@ -2516,8 +2531,16 @@
                             await uiModule.showView('profile', { userId: currentUser.uid });
                             break;
                         case'logout':await authModule.logout();break;
-                        case 'copy-post-link': const postLink = `${BASE_URL}/post/${t.dataset.postid}`; await navigator.clipboard.writeText(postLink); alert(_t('copied')); break;
-                        case'copy-profile-link':await navigator.clipboard.writeText(t.dataset.link);t.innerHTML=_t('copied');setTimeout(()=>{t.innerHTML=_t('copy');},2000);break;
+                        // +// +++ MODIFIED/ADDED +++ লিঙ্ক কপি করার জন্য data-link ব্যবহার করা হচ্ছে
+                        case 'copy-post-link': 
+                            await navigator.clipboard.writeText(t.dataset.link); 
+                            alert(_t('copied')); 
+                            break;
+                        case 'copy-profile-link':
+                            await navigator.clipboard.writeText(t.dataset.link);
+                            t.innerHTML=_t('copied');
+                            setTimeout(()=>{t.innerHTML=_t('copy');},2000);
+                            break;
                         case'delete-post':const pEl=t.closest('.post'),pId=t.dataset.postid;if(confirm(_t('confirm_post_delete'))){uiModule.showLoader(true);try{await dbModule.deletePost(pId);pEl.remove();}catch(err){alert(_t('error_post_delete',{message: err.message}));}finally{uiModule.showLoader(false);}}break;
                         case'toggle-verify':if(currentUserData.isAdmin){await dbModule.toggleUserVerification(t.dataset.userid,t.dataset.currentstate==='true');await uiModule.showView('admin');}break;
                         case'toggle-monetize':if(currentUserData.isAdmin){await dbModule.toggleUserMonetization(t.dataset.userid,t.dataset.currentstate==='true');await uiModule.showView('admin');}break;
@@ -2611,45 +2634,45 @@
     </script>
 </body>
 </html>
-<script type='text/javascript' src='//pl27329630.profitableratecpm.com/fe/b2/be/feb2be6cfa7340d0cc3aa177951447ed.js'></script>
 <script type="text/javascript">
 	atOptions = {
-		'key' : '201127ebdbf15df96966d55bd67da28e',
+		'key' : 'ea1adc043c5da4986d59714bbf7dd5f3',
 		'format' : 'iframe',
-		'height' : 60,
-		'width' : 468,
+		'height' : 50,
+		'width' : 320,
 		'params' : {}
 	};
 </script>
-<script type="text/javascript" src="//www.highperformanceformat.com/201127ebdbf15df96966d55bd67da28e/invoke.js"></script>
+<script type="text/javascript" src="//www.highperformanceformat.com/ea1adc043c5da4986d59714bbf7dd5f3/invoke.js"></script>
+<script type='text/javascript' src='//pl27393567.profitableratecpm.com/89/5a/d9/895ad9300ca4046dda9e753a880664ec.js'></script>
 <script type="text/javascript">
 	atOptions = {
-		'key' : '7de88b818e800f43ccfc3d6d01aa172d',
+		'key' : 'da70c58ac3ac888c46c047fd0e2601ae',
+		'format' : 'iframe',
+		'height' : 300,
+		'width' : 160,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//www.highperformanceformat.com/da70c58ac3ac888c46c047fd0e2601ae/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : '3dc39b935170d1a8ea4b43934ca780cb',
 		'format' : 'iframe',
 		'height' : 90,
 		'width' : 728,
 		'params' : {}
 	};
 </script>
-<script type="text/javascript" src="//www.highperformanceformat.com/7de88b818e800f43ccfc3d6d01aa172d/invoke.js"></script>
+<script type="text/javascript" src="//www.highperformanceformat.com/3dc39b935170d1a8ea4b43934ca780cb/invoke.js"></script>
 <script type="text/javascript">
 	atOptions = {
-		'key' : '869672b09f31b4807c660659d67070cd',
+		'key' : 'd3a66a4de78792129feb63a224f8ffe3',
 		'format' : 'iframe',
 		'height' : 250,
 		'width' : 300,
 		'params' : {}
 	};
 </script>
-<script type="text/javascript" src="//www.highperformanceformat.com/869672b09f31b4807c660659d67070cd/invoke.js"></script>
-<script type="text/javascript">
-	atOptions = {
-		'key' : 'a8e7487656fe2d6258c208f98cc9a53c',
-		'format' : 'iframe',
-		'height' : 90,
-		'width' : 728,
-		'params' : {}
-	};
-</script>
-<script type="text/javascript" src="//www.highperformanceformat.com/a8e7487656fe2d6258c208f98cc9a53c/invoke.js"></script>
-<script type='text/javascript' src='//pl27310843.profitableratecpm.com/c4/4d/5e/c44d5e54942075604aaa332eab476e22.js'></script>
+<script type="text/javascript" src="//www.highperformanceformat.com/d3a66a4de78792129feb63a224f8ffe3/invoke.js"></script>
+<script type='text/javascript' src='//pl27393743.profitableratecpm.com/64/fd/61/64fd6178f85e20c70b4d87f57665a334.js'></script>
